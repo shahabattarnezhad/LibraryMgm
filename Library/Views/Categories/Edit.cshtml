@@ -1,0 +1,42 @@
+@model Library.Entities.Category
+@{
+    ViewData["Title"] = "ویرایش دسته‌بندی";
+}
+
+<div class="page-intro">
+    <div>
+        <a asp-action="Index" class="back-link">← بازگشت به دسته‌بندی‌ها</a>
+        <p class="eyebrow mt-4">ویرایش مجموعه</p>
+        <h2 class="page-heading">دسته‌بندی را به‌روزرسانی کنید</h2>
+        <p class="page-subtitle">نام و توضیحات این دسته‌بندی را اصلاح کنید.</p>
+    </div>
+    <span class="page-icon category-tone">✎</span>
+</div>
+
+<div class="editor-grid category-editor-grid">
+    <form asp-action="Edit" asp-route-id="@Model.Id" method="post" class="editor-form">
+        <input type="hidden" asp-for="Id" />
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+        <div class="form-section-heading"><span class="section-number mint-number">۰۱</span><div><h3>مشخصات دسته‌بندی</h3><p>اطلاعات جدید پس از ذخیره اعمال می‌شوند.</p></div></div>
+        <div class="field-group">
+            <label asp-for="Title" class="field-label"></label>
+            <input asp-for="Title" class="field-input" maxlength="120" autocomplete="off" />
+            <span asp-validation-for="Title" class="field-error"></span>
+        </div>
+        <div class="field-group">
+            <label asp-for="Description" class="field-label"></label>
+            <textarea asp-for="Description" class="field-input field-textarea" maxlength="800" rows="5"></textarea>
+            <span asp-validation-for="Description" class="field-error"></span>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn-primary submit-loading-button" data-loading-button data-loading-text="در حال ذخیره..."><span class="button-label">✓ ذخیره تغییرات</span></button>
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn-quiet">مشاهده جزئیات</a>
+            <a asp-action="Index" class="btn-quiet">انصراف</a>
+        </div>
+    </form>
+    <aside class="editor-aside">
+        <div class="category-tip-card"><span class="category-tip-icon">✦</span><p class="eyebrow">شناسه دسته‌بندی</p><h3>@Model.Title</h3><p>@Model.Description</p><div class="category-count-line"><span>شناسه داخلی</span><strong>#@Model.Id</strong></div></div>
+    </aside>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

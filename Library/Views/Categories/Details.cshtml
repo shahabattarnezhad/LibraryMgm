@@ -1,0 +1,44 @@
+@model Library.Entities.Category
+@{
+    ViewData["Title"] = "جزئیات دسته‌بندی";
+}
+
+<div class="page-intro">
+    <div>
+        <a asp-action="Index" class="back-link">← بازگشت به دسته‌بندی‌ها</a>
+        <p class="eyebrow mt-4">نمایش اطلاعات</p>
+        <h2 class="page-heading">جزئیات دسته‌بندی</h2>
+        <p class="page-subtitle">اطلاعات دسته و کتاب‌های مرتبط با آن.</p>
+    </div>
+    <div class="intro-actions"><a asp-action="Edit" asp-route-id="@Model.Id" class="btn-primary" data-loading-link data-loading-text="در حال باز کردن...">✎ ویرایش دسته‌بندی</a><a asp-action="Delete" asp-route-id="@Model.Id" class="btn-quiet danger-quiet" data-loading-link data-loading-text="در حال باز کردن...">حذف</a></div>
+</div>
+
+<section class="category-details-panel">
+    <div class="category-details-head"><span class="category-large-icon">▦</span><div><span class="eyebrow">دسته‌بندی #@Model.Id</span><h2>@Model.Title</h2><p>@Model.Description</p></div><span class="soft-tag mint-tag">@Model.Books.Count کتاب</span></div>
+    <div class="detail-divider"></div>
+    <div class="related-books-heading"><div><h3>کتاب‌های این دسته‌بندی</h3><p>فهرست عنوان‌هایی که در این گروه ثبت شده‌اند.</p></div><a asp-controller="Books" asp-action="Create" asp-route-categoryId="@Model.Id" class="btn-quiet" data-loading-link data-loading-text="در حال باز کردن...">＋ افزودن کتاب</a></div>
+    @if (Model.Books.Count > 0)
+    {
+        <div class="related-books-list">
+            @foreach (var book in Model.Books.OrderBy(item => item.Name))
+            {
+                <a asp-controller="Books" asp-action="Details" asp-route-id="@book.Id" class="related-book-row">
+                    @if (!string.IsNullOrWhiteSpace(book.PhotoUrl))
+                    {
+                        <img class="related-book-image" src="@book.PhotoUrl" alt="" />
+                    }
+                    else
+                    {
+                        <span class="related-book-image related-image-placeholder">▤</span>
+                    }
+                    <span class="related-book-name">@book.Name<small>@book.ShortDescription</small></span>
+                    <span class="related-book-link">مشاهده ←</span>
+                </a>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="related-empty"><span>▤</span><h3>هنوز کتابی در این دسته‌بندی نیست</h3><p>می‌توانید هنگام افزودن کتاب جدید، این دسته‌بندی را انتخاب کنید.</p><a asp-controller="Books" asp-action="Create" asp-route-categoryId="@Model.Id" class="btn-primary" data-loading-link data-loading-text="در حال باز کردن...">＋ افزودن اولین کتاب</a></div>
+    }
+</section>

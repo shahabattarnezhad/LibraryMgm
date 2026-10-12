@@ -1,0 +1,37 @@
+@model IEnumerable<Library.Entities.Book>
+@{
+    ViewData["Title"] = "کتاب‌ها";
+    var books = Model.ToList();
+}
+
+<div class="list-page-toolbar">
+    <div><p class="page-subtitle">مجموعه کتاب‌های ثبت‌شده در کتابخانه را از همین‌جا مدیریت کنید.</p><p class="toolbar-caption">@books.Count عنوان در فهرست شما</p></div>
+    <a asp-action="Create" class="btn-primary" data-loading-link data-loading-text="در حال باز کردن...">＋ افزودن کتاب جدید</a>
+</div>
+
+<div class="panel overflow-hidden">
+    <div class="list-panel-header"><div><h2>فهرست کتاب‌ها</h2><p>جست‌وجو، مشاهده جزئیات و مدیریت هر عنوان</p></div><label class="search-box"><span>⌕</span><input id="tableSearch" type="search" placeholder="عنوان، توضیحات یا دسته‌بندی..." aria-label="جست‌وجو در کتاب‌ها"></label></div>
+    @if (books.Count > 0)
+    {
+        <div class="overflow-x-auto"><table class="data-table min-w-[700px]"><thead><tr><th>کتاب</th><th>توضیحات کوتاه</th><th>دسته‌بندی</th><th class="text-left">عملیات</th></tr></thead><tbody>
+        @foreach (var item in books)
+        {
+            <tr class="search-row">
+                <td><div class="flex items-center gap-3">
+                    @if (!string.IsNullOrWhiteSpace(item.PhotoUrl)) { <img class="list-book-image" src="@item.PhotoUrl" alt="" loading="lazy" /> }
+                    else { <span class="mini-book">▤</span> }
+                    <div class="list-primary-text"><span>@item.Name</span><small>شناسه #@item.Id</small></div>
+                </div></td>
+                <td class="list-description">@item.ShortDescription</td>
+                <td><span class="soft-tag">@(item.Category?.Title ?? "بدون دسته‌بندی")</span></td>
+                <td><div class="table-actions"><a class="action-link" asp-action="Details" asp-route-id="@item.Id">جزئیات</a><a class="action-link" data-loading-link data-loading-text="در حال باز کردن..." asp-action="Edit" asp-route-id="@item.Id">ویرایش</a><a class="action-link danger" data-loading-link data-loading-text="در حال باز کردن..." asp-action="Delete" asp-route-id="@item.Id">حذف</a></div></td>
+            </tr>
+        }
+        </tbody></table></div>
+        <div id="emptySearch" class="empty-search hidden">نتیجه‌ای برای جست‌وجوی شما پیدا نشد.</div>
+    }
+    else
+    {
+        <div class="empty-state"><span class="empty-state-icon book-tone">▤</span><h3>هنوز کتابی ثبت نشده است</h3><p>با افزودن اولین کتاب، ساخت مجموعه خود را آغاز کنید.</p><a asp-action="Create" class="btn-primary" data-loading-link data-loading-text="در حال باز کردن...">＋ افزودن اولین کتاب</a></div>
+    }
+</div>

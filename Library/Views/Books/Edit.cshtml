@@ -1,0 +1,72 @@
+@model Library.Entities.Book
+@{
+    ViewData["Title"] = "ویرایش کتاب";
+}
+
+<div class="page-intro">
+    <div>
+        <a asp-action="Index" class="back-link">← بازگشت به فهرست کتاب‌ها</a>
+        <p class="eyebrow mt-4">ویرایش اطلاعات</p>
+        <h2 class="page-heading">جزئیات کتاب را به‌روزرسانی کنید</h2>
+        <p class="page-subtitle">تغییرات موردنظر را اعمال کنید و در پایان ذخیره کنید.</p>
+    </div>
+    <span class="page-icon book-tone">✎</span>
+</div>
+
+<div class="editor-grid">
+    <form asp-action="Edit" asp-route-id="@Model.Id" method="post" class="editor-form">
+        <input type="hidden" asp-for="Id" />
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+        <div class="form-section-heading"><span class="section-number">۰۱</span><div><h3>اطلاعات اصلی</h3><p>مشخصات کتاب را اصلاح کنید.</p></div></div>
+
+        <div class="field-group">
+            <label asp-for="Name" class="field-label"></label>
+            <input asp-for="Name" class="field-input" maxlength="180" autocomplete="off" />
+            <span asp-validation-for="Name" class="field-error"></span>
+        </div>
+
+        <div class="field-group">
+            <label asp-for="ShortDescription" class="field-label"></label>
+            <textarea asp-for="ShortDescription" class="field-input field-textarea" maxlength="1200" rows="4"></textarea>
+            <span asp-validation-for="ShortDescription" class="field-error"></span>
+        </div>
+
+        <div class="field-group">
+            <label asp-for="CategoryId" class="field-label"></label>
+            <select asp-for="CategoryId" asp-items="ViewBag.CategoryId" class="field-input">
+                <option value="0">انتخاب دسته‌بندی</option>
+            </select>
+            <span asp-validation-for="CategoryId" class="field-error"></span>
+        </div>
+
+        <div class="form-section-heading section-spaced"><span class="section-number">۰۲</span><div><h3>تصویر کتاب</h3><p>در صورت نیاز URL جدید تصویر را وارد کنید.</p></div></div>
+        <div class="field-group">
+            <label asp-for="PhotoUrl" class="field-label"></label>
+            <input asp-for="PhotoUrl" type="url" maxlength="2048" class="field-input image-url-input" data-preview-target="#bookImagePreview" placeholder="https://example.com/images/book.jpg" dir="ltr" />
+            <span asp-validation-for="PhotoUrl" class="field-error"></span>
+            <p class="field-hint">فایل در اینجا آپلود نمی‌شود؛ فقط آدرس ذخیره می‌شود. برای حذف تصویر، این فیلد را خالی بگذارید.</p>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary submit-loading-button" data-loading-button data-loading-text="در حال ذخیره..."><span class="button-label">✓ ذخیره تغییرات</span></button>
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn-quiet">مشاهده جزئیات</a>
+            <a asp-action="Index" class="btn-quiet">انصراف</a>
+        </div>
+    </form>
+
+    <aside class="editor-aside">
+        <div class="preview-card">
+            <div class="preview-card-top"><span class="preview-label">پیش‌نمایش تصویر</span><span class="preview-spark">✦</span></div>
+            <div class="book-image-preview-wrap">
+                <img id="bookImagePreview" class="book-image-preview @(string.IsNullOrWhiteSpace(Model.PhotoUrl) ? "hidden" : "")" src="@(Model.PhotoUrl ?? "")" alt="پیش‌نمایش تصویر کتاب" />
+                <div class="image-placeholder" data-image-placeholder style="@(string.IsNullOrWhiteSpace(Model.PhotoUrl) ? "" : "display:none")"><span>▧</span><strong>تصویر کتاب</strong><small>آدرسی ثبت نشده است</small></div>
+            </div>
+            <p class="preview-footnote">با تغییر URL، پیش‌نمایش نیز به‌روزرسانی می‌شود.</p>
+        </div>
+        <div class="help-card"><span class="help-icon">✧</span><div><h3>شناسه کتاب</h3><p>شناسه داخلی این کتاب <strong>#@Model.Id</strong> است و قابل تغییر نیست.</p></div></div>
+    </aside>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

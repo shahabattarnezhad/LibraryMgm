@@ -1,0 +1,36 @@
+@model Library.Entities.Category
+@{
+    ViewData["Title"] = "حذف دسته‌بندی";
+}
+
+<div class="page-intro">
+    <div>
+        <a asp-action="Index" class="back-link">← بازگشت به دسته‌بندی‌ها</a>
+        <p class="eyebrow danger-eyebrow mt-4">حذف رکورد</p>
+        <h2 class="page-heading">حذف این دسته‌بندی؟</h2>
+        <p class="page-subtitle">پیش از حذف، تعداد کتاب‌های مرتبط را بررسی کنید.</p>
+    </div>
+    <span class="page-icon danger-tone">!</span>
+</div>
+
+<section class="confirm-panel">
+    <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+    @if (Model.Books.Count > 0)
+    {
+        <div class="confirm-alert"><span class="warning-icon">!</span><div><h3>ابتدا کتاب‌های این دسته‌بندی را جابه‌جا کنید</h3><p>این دسته‌بندی <strong>@Model.Books.Count کتاب</strong> دارد و تا زمانی که کتابی به آن وابسته است حذف نمی‌شود. این محدودیت از حذف ناخواسته اطلاعات جلوگیری می‌کند.</p></div></div>
+    }
+    else
+    {
+        <div class="confirm-alert"><span class="warning-icon">!</span><div><h3>توجه: حذف دائمی</h3><p>این دسته‌بندی پس از تأیید از کتابخانه حذف می‌شود.</p></div></div>
+    }
+    <div class="category-confirm-row"><span class="category-large-icon">▦</span><div class="confirm-book-info"><h3>@Model.Title</h3><p>@Model.Description</p></div><span class="soft-tag mint-tag">@Model.Books.Count کتاب</span></div>
+    <dl class="confirm-details"><div><dt>شناسه</dt><dd>#@Model.Id</dd></div><div><dt>تعداد کتاب‌های وابسته</dt><dd>@Model.Books.Count</dd></div></dl>
+    <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="confirm-actions">
+        <input type="hidden" asp-for="Id" />
+        @if (Model.Books.Count == 0)
+        {
+            <button type="submit" class="btn-danger submit-loading-button" data-loading-button data-loading-text="در حال حذف..."><span class="button-label">حذف دائمی دسته‌بندی</span></button>
+        }
+        <a asp-action="Index" class="btn-quiet">@(Model.Books.Count > 0 ? "بازگشت به فهرست" : "انصراف")</a>
+    </form>
+</section>

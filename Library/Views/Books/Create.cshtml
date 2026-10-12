@@ -1,0 +1,84 @@
+@model Library.Entities.Book
+@{
+    ViewData["Title"] = "افزودن کتاب";
+}
+
+<div class="page-intro">
+    <div>
+        <a asp-action="Index" class="back-link">← بازگشت به فهرست کتاب‌ها</a>
+        <p class="eyebrow mt-4">مجموعه کتابخانه</p>
+        <h2 class="page-heading">یک کتاب تازه اضافه کنید</h2>
+        <p class="page-subtitle">اطلاعات کتاب را وارد کنید تا در فهرست کتابخانه نمایش داده شود.</p>
+    </div>
+    <span class="page-icon book-tone">▤</span>
+</div>
+
+<div class="editor-grid">
+    <form asp-action="Create" method="post" class="editor-form">
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+        <div class="form-section-heading"><span class="section-number">۰۱</span><div><h3>اطلاعات اصلی</h3><p>عنوان و معرفی کوتاه کتاب را بنویسید.</p></div></div>
+
+        <div class="field-group">
+            <label asp-for="Name" class="field-label"></label>
+            <input asp-for="Name" class="field-input" maxlength="180" placeholder="مثلاً صد سال تنهایی" autocomplete="off" />
+            <span asp-validation-for="Name" class="field-error"></span>
+        </div>
+
+        <div class="field-group">
+            <label asp-for="ShortDescription" class="field-label"></label>
+            <textarea asp-for="ShortDescription" class="field-input field-textarea" maxlength="1200" rows="4" placeholder="چند جمله درباره موضوع یا ویژگی کتاب بنویسید..."></textarea>
+            <div class="field-meta"><span asp-validation-for="ShortDescription" class="field-error"></span><span>حداکثر ۱۲۰۰ کاراکتر</span></div>
+        </div>
+
+        <div class="field-group">
+            <label asp-for="CategoryId" class="field-label"></label>
+            @if (ViewBag.HasCategories == true)
+            {
+                <select asp-for="CategoryId" asp-items="ViewBag.CategoryId" class="field-input">
+                    <option value="0">انتخاب دسته‌بندی</option>
+                </select>
+            }
+            else
+            {
+                <div class="inline-notice"><span>ⓘ</span><div>برای ثبت کتاب، ابتدا یک دسته‌بندی بسازید. <a asp-controller="Categories" asp-action="Create" data-loading-link data-loading-text="در حال باز کردن...">ایجاد دسته‌بندی ←</a></div></div>
+            }
+            <span asp-validation-for="CategoryId" class="field-error"></span>
+        </div>
+
+        <div class="form-section-heading section-spaced"><span class="section-number">۰۲</span><div><h3>تصویر کتاب</h3><p>آدرس تصویر آپلودشده در سرویس ثالث را وارد کنید.</p></div></div>
+        <div class="field-group">
+            <label asp-for="PhotoUrl" class="field-label"></label>
+            <input asp-for="PhotoUrl"
+                   type="url"
+                   maxlength="2048"
+                   class="field-input image-url-input"
+                   data-image-url-input
+                   data-preview-target="#bookImagePreview"
+                   placeholder="https://example.com/images/book.jpg"
+                   dir="ltr" />
+            <span asp-validation-for="PhotoUrl" class="field-error"></span>
+            <p class="field-hint">فایل تصویر در این فرم آپلود نمی‌شود؛ فقط URL آن ذخیره خواهد شد.</p>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary submit-loading-button" data-loading-button data-loading-text="در حال ثبت..." disabled="@(ViewBag.HasCategories != true)"><span class="button-label">＋ ثبت کتاب</span></button>
+            <a asp-action="Index" class="btn-quiet">انصراف</a>
+        </div>
+    </form>
+
+    <aside class="editor-aside">
+        <div class="preview-card">
+            <div class="preview-card-top"><span class="preview-label">پیش‌نمایش تصویر</span><span class="preview-spark">✦</span></div>
+            <div class="book-image-preview-wrap">
+                <img id="bookImagePreview" class="book-image-preview hidden" src="" alt="پیش‌نمایش تصویر کتاب" />
+                <div class="image-placeholder" data-image-placeholder><span>▧</span><strong>تصویر کتاب</strong><small>با وارد کردن URL نمایش داده می‌شود</small></div>
+            </div>
+            <p class="preview-footnote">برای نمایش بهتر، آدرس مستقیم تصویر را وارد کنید.</p>
+        </div>
+        <div class="help-card"><span class="help-icon">✧</span><div><h3>نکته کاربردی</h3><p>بعد از آپلود تصویر در سرویس موردنظر، لینک مستقیم آن را در فیلد آدرس تصویر قرار دهید.</p></div></div>
+    </aside>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

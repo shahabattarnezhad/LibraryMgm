@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] | کتابخانه‌یار</title>
+    <meta name="theme-color" content="#f6f7fb" id="themeColorMeta" />
+    <script>
+        (() => {
+            try {
+                const savedTheme = localStorage.getItem('library-theme');
+                const preferredTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                document.documentElement.dataset.theme = savedTheme || preferredTheme;
+            } catch { document.documentElement.dataset.theme = 'light'; }
+        })();
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: {
+                fontFamily: { sans: ['Vazirmatn', 'Tahoma', 'sans-serif'] },
+                colors: { ink: '#101827', brand: '#6558F5', mint: '#20C997', paper: '#F6F7FB' },
+                boxShadow: { soft: '0 12px 40px rgba(16,24,39,.07)' }
+            }}
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="bg-paper text-slate-800 font-sans antialiased">
+<div class="min-h-screen lg:flex">
+    <aside class="sidebar lg:fixed lg:inset-y-0 lg:right-0 lg:flex lg:w-72 lg:flex-col text-white">
+        <a asp-controller="Home" asp-action="Index" class="flex items-center gap-3 px-7 py-8">
+            <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 5.5v16M8 7h8M8 11h8"/></svg></span>
+            <span><strong class="block text-lg tracking-tight">کتابخانه‌یار</strong><small class="text-slate-400">مدیریت هوشمند کتابخانه</small></span>
+        </a>
+        <div class="px-5 text-[11px] font-bold tracking-widest text-slate-500 mb-3">فضای کاری</div>
+        <nav class="px-4 space-y-2">
+            <a asp-controller="Home" asp-action="Index" class="side-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")"><span>⌂</span> نمای کلی</a>
+            <a asp-controller="Books" asp-action="Index" class="side-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Books" ? "active" : "")"><span>▤</span> کتاب‌ها</a>
+            <a asp-controller="Categories" asp-action="Index" class="side-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Categories" ? "active" : "")"><span>▦</span> دسته‌بندی‌ها</a>
+        </nav>
+        <div class="mt-auto p-5">
+            <div class="rounded-2xl border border-white/10 bg-white/[.05] p-4">
+                <div class="mb-2 flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-emerald-400"></span><span class="text-sm font-semibold">همه‌چیز مرتب است</span></div>
+                <p class="text-xs leading-6 text-slate-400">کتاب‌ها و دسته‌بندی‌های خود را از یک فضای ساده و یکپارچه مدیریت کنید.</p>
+            </div>
+            <p class="mt-5 text-center text-[11px] text-slate-500">کتابخانه‌یار · نسخه ۱.۱</p>
+        </div>
+    </aside>
+    <main class="min-w-0 flex-1 lg:mr-72">
+        <header class="topbar sticky top-0 z-20 flex items-center justify-between gap-4 px-5 py-4 sm:px-8">
+            <div>
+                <p class="text-xs text-slate-500">پنل مدیریت / <span class="text-slate-700">@ViewData["Title"]</span></p>
+                <h1 class="mt-1 text-lg font-bold text-ink sm:text-xl">@ViewData["Title"]</h1>
+            </div>
+            <div class="flex items-center gap-3">
+                <button type="button" class="theme-toggle" data-theme-toggle aria-label="فعال‌کردن حالت شب" aria-pressed="false"><span class="theme-toggle-icon" data-theme-icon>☾</span><span class="theme-toggle-label" data-theme-label>حالت شب</span></button>
+                <span class="hidden text-sm text-slate-500 sm:inline">خوش آمدید</span>
+                <div class="avatar">ک</div>
+            </div>
+        </header>
+        <div class="mx-auto max-w-[1500px] p-5 sm:p-8">
+            @if (TempData["SuccessMessage"] is string successMessage)
+            {
+                <div class="toast-success" role="status"><span>✓</span><p>@successMessage</p><button type="button" data-dismiss-toast aria-label="بستن پیام">×</button></div>
+            }
+            @RenderBody()
+            <footer class="site-footer">ساخته‌شده برای مدیریت ساده‌تر کتابخانه شما</footer>
+        </div>
+    </main>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

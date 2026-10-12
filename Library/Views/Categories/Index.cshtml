@@ -1,0 +1,33 @@
+@model IEnumerable<Library.Entities.Category>
+@{
+    ViewData["Title"] = "دسته‌بندی‌ها";
+    var categories = Model.ToList();
+}
+
+<div class="list-page-toolbar">
+    <div><p class="page-subtitle">موضوع‌ها و مجموعه‌های کتابخانه را مرتب و قابل جست‌وجو نگه دارید.</p><p class="toolbar-caption">@categories.Count دسته‌بندی در کتابخانه</p></div>
+    <a asp-action="Create" class="btn-primary" data-loading-link data-loading-text="در حال باز کردن...">＋ دسته‌بندی جدید</a>
+</div>
+
+<div class="panel overflow-hidden">
+    <div class="list-panel-header"><div><h2>همه دسته‌بندی‌ها</h2><p>مدیریت عنوان، توضیحات و کتاب‌های هر گروه</p></div><label class="search-box"><span>⌕</span><input id="tableSearch" type="search" placeholder="جست‌وجوی دسته‌بندی..." aria-label="جست‌وجو در دسته‌بندی‌ها"></label></div>
+    @if (categories.Count > 0)
+    {
+        <div class="overflow-x-auto"><table class="data-table min-w-[650px]"><thead><tr><th>نام دسته‌بندی</th><th>توضیحات</th><th>کتاب‌ها</th><th class="text-left">عملیات</th></tr></thead><tbody>
+        @foreach (var item in categories)
+        {
+            <tr class="search-row">
+                <td><div class="flex items-center gap-3"><span class="category-icon">▦</span><div class="list-primary-text"><span>@item.Title</span><small>شناسه #@item.Id</small></div></div></td>
+                <td class="list-description">@item.Description</td>
+                <td><span class="soft-tag mint-tag">@(item.Books?.Count ?? 0) کتاب</span></td>
+                <td><div class="table-actions"><a class="action-link" asp-action="Details" asp-route-id="@item.Id">جزئیات</a><a class="action-link" data-loading-link data-loading-text="در حال باز کردن..." asp-action="Edit" asp-route-id="@item.Id">ویرایش</a><a class="action-link danger" data-loading-link data-loading-text="در حال باز کردن..." asp-action="Delete" asp-route-id="@item.Id">حذف</a></div></td>
+            </tr>
+        }
+        </tbody></table></div>
+        <div id="emptySearch" class="empty-search hidden">نتیجه‌ای برای جست‌وجوی شما پیدا نشد.</div>
+    }
+    else
+    {
+        <div class="empty-state"><span class="empty-state-icon category-tone">▦</span><h3>دسته‌بندی‌ای وجود ندارد</h3><p>برای مرتب‌سازی کتاب‌ها، اولین دسته‌بندی را ایجاد کنید.</p><a asp-action="Create" class="btn-primary" data-loading-link data-loading-text="در حال باز کردن...">＋ ایجاد دسته‌بندی</a></div>
+    }
+</div>

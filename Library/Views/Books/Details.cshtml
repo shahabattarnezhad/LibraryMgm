@@ -1,0 +1,41 @@
+@model Library.Entities.Book
+@{
+    ViewData["Title"] = "جزئیات کتاب";
+}
+
+<div class="page-intro">
+    <div>
+        <a asp-action="Index" class="back-link">← بازگشت به فهرست کتاب‌ها</a>
+        <p class="eyebrow mt-4">نمایش اطلاعات</p>
+        <h2 class="page-heading">جزئیات کتاب</h2>
+        <p class="page-subtitle">تمام اطلاعات ثبت‌شده برای این عنوان در یک نگاه.</p>
+    </div>
+    <div class="intro-actions"><a asp-action="Edit" asp-route-id="@Model.Id" class="btn-primary" data-loading-link data-loading-text="در حال باز کردن...">✎ ویرایش کتاب</a><a asp-action="Delete" asp-route-id="@Model.Id" class="btn-quiet danger-quiet" data-loading-link data-loading-text="در حال باز کردن...">حذف</a></div>
+</div>
+
+<section class="details-panel">
+    <div class="details-cover">
+        @if (!string.IsNullOrWhiteSpace(Model.PhotoUrl))
+        {
+            <img class="details-book-image" src="@Model.PhotoUrl" alt="تصویر جلد @Model.Name" />
+        }
+        else
+        {
+            <div class="details-image-placeholder"><span>▤</span><small>بدون تصویر</small></div>
+        }
+        <span class="record-id">شناسه #@Model.Id</span>
+    </div>
+    <div class="details-content">
+        <span class="soft-tag book-tone">@Model.Category?.Title</span>
+        <h2 class="details-title">@Model.Name</h2>
+        <p class="details-description">@Model.ShortDescription</p>
+        <div class="detail-divider"></div>
+        <dl class="details-list">
+            <div><dt>عنوان کتاب</dt><dd>@Model.Name</dd></div>
+            <div><dt>دسته‌بندی</dt><dd>@(Model.Category?.Title ?? "بدون دسته‌بندی")</dd></div>
+            <div><dt>شناسه دسته‌بندی</dt><dd>@Model.CategoryId</dd></div>
+            <div class="url-detail"><dt>آدرس تصویر</dt><dd>@if (!string.IsNullOrWhiteSpace(Model.PhotoUrl)) { <a href="@Model.PhotoUrl" target="_blank" rel="noopener noreferrer" dir="ltr">مشاهده تصویر ↗</a> } else { <span class="muted-value">ثبت نشده</span> }</dd></div>
+        </dl>
+        <div class="form-actions"><a asp-action="Edit" asp-route-id="@Model.Id" class="btn-primary" data-loading-link data-loading-text="در حال باز کردن...">✎ ویرایش اطلاعات</a><a asp-action="Index" class="btn-quiet">بازگشت به فهرست</a></div>
+    </div>
+</section>

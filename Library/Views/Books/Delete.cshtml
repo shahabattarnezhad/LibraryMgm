@@ -1,0 +1,36 @@
+@model Library.Entities.Book
+@{
+    ViewData["Title"] = "حذف کتاب";
+}
+
+<div class="page-intro">
+    <div>
+        <a asp-action="Index" class="back-link">← بازگشت به فهرست کتاب‌ها</a>
+        <p class="eyebrow danger-eyebrow mt-4">حذف رکورد</p>
+        <h2 class="page-heading">از حذف این کتاب مطمئن هستید؟</h2>
+        <p class="page-subtitle">این اقدام قابل بازگشت نیست. قبل از ادامه، اطلاعات زیر را بررسی کنید.</p>
+    </div>
+    <span class="page-icon danger-tone">!</span>
+</div>
+
+<section class="confirm-panel">
+    <div class="confirm-alert"><span class="warning-icon">!</span><div><h3>توجه: حذف دائمی</h3><p>با تأیید این عملیات، این عنوان از فهرست کتابخانه حذف خواهد شد.</p></div></div>
+    <div class="confirm-book-row">
+        @if (!string.IsNullOrWhiteSpace(Model.PhotoUrl))
+        {
+            <img class="confirm-thumb" src="@Model.PhotoUrl" alt="تصویر @Model.Name" />
+        }
+        else
+        {
+            <span class="confirm-thumb thumb-fallback">▤</span>
+        }
+        <div class="confirm-book-info"><h3>@Model.Name</h3><p>@Model.ShortDescription</p><span class="soft-tag">@(Model.Category?.Title ?? "بدون دسته‌بندی")</span></div>
+        <span class="record-id">#@Model.Id</span>
+    </div>
+    <dl class="confirm-details"><div><dt>دسته‌بندی</dt><dd>@(Model.Category?.Title ?? "بدون دسته‌بندی")</dd></div><div><dt>آدرس تصویر</dt><dd>@(string.IsNullOrWhiteSpace(Model.PhotoUrl) ? "ثبت نشده" : "ثبت شده")</dd></div></dl>
+    <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="confirm-actions">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn-danger submit-loading-button" data-loading-button data-loading-text="در حال حذف..."><span class="button-label">حذف دائمی کتاب</span></button>
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn-quiet">انصراف</a>
+    </form>
+</section>

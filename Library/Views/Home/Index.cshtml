@@ -1,0 +1,41 @@
+@{
+    ViewData["Title"] = "نمای کلی";
+}
+<section class="hero-panel relative overflow-hidden rounded-[28px] p-7 text-white sm:p-10">
+    <div class="relative z-10 max-w-2xl">
+        <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs text-indigo-100"><span class="h-2 w-2 rounded-full bg-emerald-300"></span> فضای مدیریت کتابخانه</div>
+        <h2 class="text-3xl font-extrabold leading-tight sm:text-4xl">دنیای کتاب‌هایتان،<br class="hidden sm:block"> منظم‌تر از همیشه.</h2>
+        <p class="mt-4 max-w-lg text-sm leading-7 text-indigo-100/90 sm:text-base">کتاب‌ها را مدیریت کنید، مجموعه‌ها را دسته‌بندی کنید و همه‌چیز را از یک داشبورد خلوت و کاربردی در دسترس داشته باشید.</p>
+        <div class="mt-7 flex flex-wrap gap-3">
+            <a asp-controller="Books" asp-action="Index" class="btn-white">مشاهده کتاب‌ها <span>←</span></a>
+            <a asp-controller="Categories" asp-action="Index" class="btn-glass">مدیریت دسته‌بندی‌ها</a>
+        </div>
+    </div>
+    <div class="hero-orb orb-one"></div><div class="hero-orb orb-two"></div>
+    <div class="book-art" aria-hidden="true"><div class="book book-a"></div><div class="book book-b"></div><div class="book book-c"></div><div class="book-spark">✦</div></div>
+</section>
+
+<div class="mt-8 grid gap-5 md:grid-cols-2">
+    <a asp-controller="Books" asp-action="Index" class="feature-card group">
+        <div class="flex items-start justify-between">
+            <span class="feature-icon bg-violet-50 text-violet-600">▤</span>
+            <span class="card-arrow">↗</span>
+        </div>
+        <h3 class="mt-5 text-lg font-bold text-ink">کتاب‌ها</h3>
+        <p class="mt-2 text-sm leading-6 text-slate-500">مشاهده فهرست کتاب‌ها، ثبت عنوان جدید و ویرایش اطلاعات مجموعه.</p>
+        <span class="mt-5 inline-flex items-center gap-2 text-sm font-bold text-brand">ورود به بخش کتاب‌ها <span>←</span></span>
+    </a>
+    <a asp-controller="Categories" asp-action="Index" class="feature-card group">
+        <div class="flex items-start justify-between">
+            <span class="feature-icon bg-emerald-50 text-emerald-600">▦</span>
+            <span class="card-arrow">↗</span>
+        </div>
+        <h3 class="mt-5 text-lg font-bold text-ink">دسته‌بندی‌ها</h3>
+        <p class="mt-2 text-sm leading-6 text-slate-500">ساخت دسته‌بندی‌های منظم برای پیدا کردن سریع‌تر کتاب‌های مرتبط.</p>
+        <span class="mt-5 inline-flex items-center gap-2 text-sm font-bold text-brand">مدیریت دسته‌بندی‌ها <span>←</span></span>
+    </a>
+</div>
+<div class="mt-7 rounded-2xl border border-indigo-100 bg-indigo-50/70 p-5 sm:flex sm:items-center sm:justify-between">
+    <div class="flex items-start gap-3"><span class="text-xl">✦</span><div><h3 class="font-bold text-ink">یک شروع خوب برای مجموعه‌ای بزرگ‌تر</h3><p class="mt-1 text-sm leading-6 text-slate-600">برای شروع، کتاب‌ها و دسته‌بندی‌های خود را از منوی کناری اضافه کنید.</p></div></div>
+    <a asp-controller="Books" asp-action="Create" class="btn-primary mt-4 sm:mt-0" data-loading-link data-loading-text="در حال باز کردن...">＋ افزودن کتاب</a>
+</div>
